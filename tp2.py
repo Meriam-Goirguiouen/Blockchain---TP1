@@ -38,11 +38,13 @@ genesis = Block(0,"2025-10-12", "Bloc de genèse","0")
 BlockChain_List.append(genesis)
 Block1 = Block(1,"2025-10-12", "Alice envoie 5 BTC", BlockChain_List[-1].hash)
 BlockChain_List.append(Block1)
-Block2 = Block(2,"2025-10-12", "Bob envoie 3 BTC", BlockChain_List[-1].hash)
+Block2 = Block(2,"2025-10-12", "Bob envoie 10 BTC", BlockChain_List[-1].hash)
 BlockChain_List.append(Block2)
 
 # Affichage de tous les blocks :
 print(json.dumps([b.__dict__ for b in BlockChain_List], indent=4))
+
+
 BlockChain_test = [genesis, Block1]
 if Verify_block(BlockChain_test):
     print(" Compatibe !!")
