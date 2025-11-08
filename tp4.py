@@ -7,7 +7,7 @@ class Transaction:
         self.amount = amount
 
 class Block:
-    def __inti__(self, timestamp, transactions, previous_hash=''):
+    def __init__(self, timestamp, transactions, previous_hash=''):
         self.timestamp = timestamp
         self.transactions = transactions
         self.previous_hash = previous_hash
@@ -48,7 +48,7 @@ class Blockchain:
         # Créer un bloc avec toutes les transactions en attente
         block = Block(time.time(), self.pending_transactions, self.get_last_block().hash)
         block.mine_block(self.difficulty)
-        print("Blic valide et ajoute a la chaine !")
+        print("Bloc valide et ajoute a la chaine !")
         self.chain.append(block)
         # Après minage, on crée une transaction de récompense pour le mineur
         self.pending_transactions = [
@@ -72,5 +72,47 @@ class Blockchain:
             if current.hash != current.create_hash() or current.previous_hash != prev.hash:
                 return False
         return True
+
+# ---------------- test et vérification:
+OurBlockchain = Blockchain()
+# Création des transactions
+# Transaction N°1 :
+OurBlockchain.create_trasanction(Transaction("Alice","Bob",50))
+# Transaction N°2 :
+OurBlockchain.create_trasanction(Transaction("Bob","Charlie",25))
+# Transaction N°3 :
+OurBlockchain.create_trasanction(Transaction("Salama","Meriam",60))
+
+# Miner la 1ère transaction en attente -- appel N°1
+OurBlockchain.mine_pending_transactions('Alice')
+
+# Affichage du solde du mineur:
+print(f"Le solde du mineur (Alice) = {OurBlockchain.get_balance_of_address('Alice')}")
+
+# Miner la 1ère transaction en attente -- Appel N°2
+OurBlockchain.mine_pending_transactions('Alice')
+
+# Affichage du solde :
+print(f"Aprs le 2eme minage : Le solde du mineur (Alice) = {OurBlockchain.get_balance_of_address('Alice')}")
+
+# Miner la 3ème transaction en attente -- appel N°1
+OurBlockchain.mine_pending_transactions('Salama')
+
+#Affichage du solde:
+print(f"Aprs le 1er minage : Le solde du mineur (Salama)= {OurBlockchain.get_balance_of_address('Salama')}")
+
+# Miner la 3ème transaction en attente -- appel N°2
+OurBlockchain.mine_pending_transactions('Salama')
+
+#Affichage du solde:
+print(f"Aprs le 2eme minage : Le solde du mineur (Salama)= {OurBlockchain.get_balance_of_address('Salama')}")
+
+# Vérification de la validité:
+print(" \n\t\t------------------------------ TEST DE VALIDITE ------------------------------")
+if OurBlockchain.is_chain_valid():
+    print("Les blocs de votre blockchain sont encore valides !")
+else:
+    print("Oups! Un problème est servenu")
+
 
 
